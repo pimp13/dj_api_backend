@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.exceptions import JsonResponse
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -45,3 +45,47 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            return ErrorResponse(
+                message="نام کاربری یا رمز عبور اشتباه است"
+            ).to_response()
+
+        data = serializer.validated_data
+        access_token = data["access"]
+        refresh_token = data["refresh"]
+
+        response = SuccessResponse(
+            data={
+                "username": request.data.get("username"),
+            },
+            message="ورود موفقیت‌آمیز بود",
+        ).to_response()
+
+        # ست کردن توکن‌ها در کوکی
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            secure=False,  # در production باید True شود
+            samesite="Lax",
+            max_age=60 * 60 * 24 * 1,  # 1 روز
+        )
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            httponly=True,
+            secure=False,  # در production باید True شود
+            samesite="Lax",
+            max_age=60 * 60 * 24 * 7,  # 7 روز
+        )
+
+        return response
+
+
+class UserInfoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return SuccessResponse(message="You logged!!!")
