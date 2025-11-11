@@ -17,8 +17,16 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+
+from category.views import CategoryViewSet
+
+router = routers.DefaultRouter()
+router.register(r"category", CategoryViewSet, basename="category")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/", include(router.urls)),
     path("api/auth/", include("auth_app.urls")),
+    path("api/category/", include("category.urls")),
 ]

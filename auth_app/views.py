@@ -5,11 +5,13 @@ from rest_framework.exceptions import JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from auth_app.dto.register import RegisterDto
-from auth_app.serializers import UserSerializer
+from auth_app.serializers import RegisterSerializer, UserSerializer
 from auth_app.service import AuthService
 
 
 class RegisterView(APIView):
+    serializer_class = RegisterSerializer
+
     def post(self, request):
         try:
             bodyData = RegisterDto(
