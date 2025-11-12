@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     "drf_yasg",
     "auth_app",
     "category",
-    'post'
+    'post',
+    'pdfapp'
 ]
 
 MIDDLEWARE = [
