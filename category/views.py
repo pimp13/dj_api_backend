@@ -23,7 +23,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
             return SuccessResponse(
                 data=serializer.data,
                 message="دسته‌بندی با موفقیت ایجاد شد",
-                status=status.HTTP_201_CREATED,
+                status_code=status.HTTP_201_CREATED,
             ).to_response()
         return ErrorResponse(
             message="داده‌ها نامعتبر هستند", data=serializer.errors

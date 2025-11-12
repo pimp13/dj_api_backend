@@ -1,9 +1,15 @@
+from django.conf import settings
 from django.db import models
 from django.utils.encoding import iri_to_uri
 from django.utils.text import slugify
 
 
 class Post(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='posts',
+    )
     title = models.CharField(max_length=250, verbose_name="عنوان پست")
     content = models.TextField(verbose_name="متن محتوا")
     image = models.ImageField(upload_to="posts/", null=True, blank=True)
@@ -37,6 +43,6 @@ class Post(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "دسته بندی"
-        verbose_name_plural = "دسته بندی ها"
+        verbose_name = "پست"
+        verbose_name_plural = "پست ها"
         ordering = ["title", "created_at"]
