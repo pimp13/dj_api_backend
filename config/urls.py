@@ -25,7 +25,6 @@ from rest_framework import permissions
 
 router = routers.DefaultRouter()
 
-
 schema_view = get_schema_view(
     openapi.Info(
         title="Apophis API",
@@ -36,12 +35,12 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api/auth/", include("auth_app.urls")),
     path("api/category/", include("category.urls")),
+    path("api/post/", include("post.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     re_path(

@@ -6,11 +6,11 @@ from rest_framework.response import Response
 
 class BaseResponse:
     def __init__(
-        self,
-        ok: bool,
-        message: str,
-        data: Optional[Any] = None,
-        status_code: int = status.HTTP_200_OK,
+            self,
+            ok: bool,
+            message: str,
+            data: Optional[Any] = None,
+            status_code: int = status.HTTP_200_OK,
     ):
         self.ok = ok
         self.message = message
@@ -30,21 +30,21 @@ class BaseResponse:
 
 class SuccessResponse(BaseResponse):
     def __init__(
-        self,
-        ok: bool = True,
-        message: str = "Success",
-        data: Optional[Any] = None,
-        status_code: int = status.HTTP_200_OK,
+            self,
+            ok: bool = True,
+            message: str = "Success",
+            data: Optional[Any] = None,
+            status_code: int = status.HTTP_200_OK,
     ):
         super().__init__(ok, message, data, status_code)
 
 
 class ErrorResponse(BaseResponse):
     def __init__(
-        self,
-        ok: bool = False,
-        message: str = "Error",
-        data: Optional[Any] = None,
-        status_code: int = status.HTTP_500_INTERNAL_SERVER_ERROR,
+            self,
+            ok: bool = False,
+            message: str = "Error",
+            data: Optional[Any] = None,
+            status_code: int = status.HTTP_500_INTERNAL_SERVER_ERROR,
     ):
         super().__init__(ok, message, data, status_code)

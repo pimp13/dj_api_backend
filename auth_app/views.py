@@ -2,14 +2,15 @@ from rest_framework import status
 from rest_framework.exceptions import JsonResponse
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from auth_app.dto.register import RegisterDto
-from auth_app.serializers import RegisterSerializer
+from auth_app.serializers import RegisterSerializer, UserSerializer
 from auth_app.service import AuthService
-from utils.response import SuccessResponse
+from utils.response import SuccessResponse, ErrorResponse
 
 
 class RegisterView(CreateAPIView):
@@ -87,5 +88,9 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class UserInfoView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        return SuccessResponse(message="You logged!!!")
+    def get(self, request: Request):
+        user = UserSerializer(request.user)
+        return SuccessResponse(
+            data=user.data,
+            message="You logged!!!",
+        ).to_response()
